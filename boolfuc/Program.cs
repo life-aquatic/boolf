@@ -113,7 +113,7 @@ namespace boolfuc
             bool foundCounterpart = false;
             while (!foundCounterpart | moreBracketsToSkip > 0)
             {
-                if (program[cursor] == instructions.openingBrac)
+                if (program[cursor] ==jj instructions.openingBrac)
                 {
                     foundCounterpart = true;
                     if (moreBracketsToSkip > 0)
@@ -199,7 +199,7 @@ namespace boolfuc
              "; +; +; +;+fffff;00;;; " +               //space
              "; +; +; ; +; ; ; +; " +           //r
              "; ; +; ; +; +; ; +; " +           //l
-             "; ; +; +; ; +; ; +; " +           //d
+             "; ; +; +; ;jj +; ; +; " +           //d
              "+; +; ; ; ; +; +; ; " +           //!
              "; +; +; +; ";
             //int EOF = hwbrac.Length;
