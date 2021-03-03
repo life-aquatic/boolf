@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
 using System.Numerics;
-
+//potentially nonconflicting line
 //Here is some work I did on Somebranch2
 namespace boolfuc
 {
