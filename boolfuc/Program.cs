@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections;
 using System.Numerics;
 
+//here is some work I did while on Master branch
 namespace boolfuc
 {
     public class Tape
