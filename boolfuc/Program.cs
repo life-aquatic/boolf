@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Collections;
 using System.Numerics;
 
+//fixed merge conflict by nuking all
+
 namespace boolfuc
 {
     public class Tape
@@ -193,7 +195,7 @@ namespace boolfuc
              "+; ; ; ; +; +; ; +; " +           //o
              "; +; +; +;+;;;; " +               //newline
              "; ; +; ; +; +; +; ; " +           //,
-             "; ; ; ; ; +; +; ; " +             //space
+             "; ; ; ; ; +; +;[ ; " +             //space
              "+; ; ; +; +; ; ; +; " +           //w
              "+; ; ; ; +; +; ; +; " +           //o
              "; +; +; +;+fffff;00;;; " +               //space
