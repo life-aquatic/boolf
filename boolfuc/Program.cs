@@ -7,10 +7,7 @@ using System.Threading.Tasks;
 using System.Collections;
 using System.Numerics;
 
-
-//here is some work I did while on Master branch
-
-//Here is some work I did on Somebranch2
+//fixed merge conflict by nuking all
 
 namespace boolfuc
 {
