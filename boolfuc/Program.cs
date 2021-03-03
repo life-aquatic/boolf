@@ -8,7 +8,7 @@ using System.Collections;
 using System.Numerics;
 
 //fixed merge conflict by nuking all
-
+//so let's say I incredibly simplified the program
 namespace boolfuc
 {
     public class Tape
