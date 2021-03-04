@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 using System.Collections;
 using System.Numerics;
 
-//fixed merge conflict by nuking all
-//so let's say I incredibly simplified the program
+
 namespace boolfuc
 {
     public class Tape
@@ -108,6 +107,7 @@ namespace boolfuc
 
     public static class FlowOfControl
     {
+        //now if a bracket is not correctly termintated, we fly out of the program. maybe I need a nice exception for that.
         public static int JumpCursor(string program, int cursor, bool backwards = false)
         {
             (char openingBrac, char closingBrac, int direction) instructions = backwards ? ('[', ']', -1) : (']', '[', 1);
@@ -115,7 +115,7 @@ namespace boolfuc
             bool foundCounterpart = false;
             while (!foundCounterpart | moreBracketsToSkip > 0)
             {
-                if (program[cursor] ==jj instructions.openingBrac)
+                if (program[cursor] ==instructions.openingBrac)
                 {
                     foundCounterpart = true;
                     if (moreBracketsToSkip > 0)
@@ -138,8 +138,8 @@ namespace boolfuc
             int EOF = code.Length;
             int cursor = 0;
             Tape tape = new Tape();
-            Queue<bool> outBufferSimple = new Queue<bool>();
-            //OutputBuffer outputBuffer = new OutputBuffer();
+            //Queue<bool> outBufferSimple = new Queue<bool>();
+            OutputBuffer outputBuffer = new OutputBuffer();
             InputBuffer inputBuffer = new InputBuffer();
             while (cursor < EOF)
             {
@@ -149,7 +149,8 @@ namespace boolfuc
                         tape.FlipCursor();
                         break;
                     case ';':
-                        outBufferSimple.Enqueue(tape.ReadBit(tape.Cursor));
+                        outputBuffer.Dump(tape.ReadBit(tape.Cursor));
+                        //outBufferSimple.Enqueue(tape.ReadBit(tape.Cursor));
                         break;
                     case ',':
                         tape.WriteCursor(inputBuffer.OneBitFromBuffer());
@@ -172,8 +173,7 @@ namespace boolfuc
                 }
                 cursor += 1;
             }
-            foreach (bool i in Enumerable.Repeat(false, 8 - (outBufferSimple.Count % 8)))
-                outBufferSimple.Enqueue(i);
+            
             //byte[] outputByte = new byte[outBufferSimple.Count / 8];
             //outBufferSimple.CopyTo(outputByte, 0);
             //Console.Write(Encoding.ASCII.GetString(outputByte));
@@ -195,7 +195,7 @@ namespace boolfuc
              "+; ; ; ; +; +; ; +; " +           //o
              "; +; +; +;+;;;; " +               //newline
              "; ; +; ; +; +; +; ; " +           //,
-             "; ; ; ; ; +; +;[ ; " +             //space
+             "; ; ; ; ; +; +; ; " +             //space
              "+; ; ; +; +; ; ; +; " +           //w
              "+; ; ; ; +; +; ; +; " +           //o
              "; +; +; +;+fffff;00;;; " +               //space
@@ -204,6 +204,7 @@ namespace boolfuc
              "; ; +; +; ;jj +; ; +; " +           //d
              "+; +; ; ; ; +; +; ; " +           //!
              "; +; +; +; ";
+            Console.WriteLine(Boolfuck.interpret(hwbrac, ""));
             //int EOF = hwbrac.Length;
             //int cursor = 0;
             //Tape tape = new Tape();
