@@ -98,7 +98,6 @@ namespace boolfuc
                 Console.Write(Encoding.ASCII.GetString(outputByte));
                 outputCursor = 0;
                 outBuffer[outputCursor] = value;
-                
             }
         }
     }

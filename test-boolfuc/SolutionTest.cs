@@ -122,8 +122,34 @@ namespace boolfuc
             Assert.AreEqual(TestOutputBuffer(testBits0), "");
         }
 
+        
+
 
     }
+    [TestClass]
+    public class TestOutputBuffer2
+    {
+        OutputBuffer2 outputBuffer2 = new OutputBuffer2();
+        List<bool> testBits24 = new List<bool>()
+                { true, false, false, false, false, true, true, false,
+             false, true, false, false, false, true, true, false,
+             true, true, false, false, false, true, true, false, false };
+        List<byte> expectedRes24 = new List<byte>()
+        {
+            134, 70, 198
+        };
+        [TestMethod]
+        public void TestDump()
+        {
+            foreach (bool i in testBits24)
+            {
+                outputBuffer2.Dump(i);
+            }
+            CollectionAssert.AreEqual(expectedRes24, outputBuffer2.outBuffer);
+        }
+    }
+
+
     [TestClass]
     public class TestFlowOfControl
     {

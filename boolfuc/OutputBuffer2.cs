@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace boolfuc
 {
-    class OutputBuffer2
+    public class OutputBuffer2
     {
         byte currentChar = 0b0000_0000;
         int bitsWritten = 0;
-        List<byte> outBuffer = new List<byte>();
+        public List<byte> outBuffer = new List<byte>();
         public void Dump(bool value)
         {
             if (bitsWritten == 8)
@@ -22,8 +22,9 @@ namespace boolfuc
             currentChar <<= 1;
             currentChar += value ? 1 : 0;
             bitsWritten += 1;
-            
         }
+
+        //this ToString override is here only for debugging, I'll get rid of it.
         public override string ToString()
         {
             var ou = new List<string>();
