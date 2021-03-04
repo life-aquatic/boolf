@@ -98,6 +98,7 @@ namespace boolfuc
                 Console.Write(Encoding.ASCII.GetString(outputByte));
                 outputCursor = 0;
                 outBuffer[outputCursor] = value;
+                
             }
         }
     }
@@ -204,44 +205,31 @@ namespace boolfuc
              "; ; +; +; ;jj +; ; +; " +           //d
              "+; +; ; ; ; +; +; ; " +           //!
              "; +; +; +; ";
-            Console.WriteLine(Boolfuck.interpret(hwbrac, ""));
-            //int EOF = hwbrac.Length;
-            //int cursor = 0;
-            //Tape tape = new Tape();
-            //OutputBuffer outputBuffer = new OutputBuffer();
-            //InputBuffer inputBuffer = new InputBuffer();
-            //while (cursor < EOF)
-            //{
-            //    //TODO: replace hwbrac with a variable
-            //    switch (hwbrac[cursor])
-            //    {
-            //        case '+':
-            //            tape.FlipCursor();
-            //            break;
-            //        case ';':
-            //            outputBuffer.Dump(tape.ReadBit(tape.Cursor));
-            //            break;
-            //        case ',':
-            //            tape.WriteCursor(inputBuffer.OneBitFromBuffer());
-            //            break;
-            //        case '>':
-            //            tape.Cursor += 1;
-            //            break;
-            //        case '<':
-            //            tape.Cursor -= 1;
-            //            break;
-            //        case '[':
-            //            if (!tape.ReadBit(tape.Cursor))
-            //                cursor = FlowOfControl.JumpCursor(hwbrac, cursor);
-            //            break;
-            //        case ']':
-            //            cursor = FlowOfControl.JumpCursor(hwbrac, cursor, true) + 1;
-            //            break;
-            //        default:
-            //            break;
-            //    }
-            //    cursor += 1;
-            //}
+            //Console.WriteLine(Boolfuck.interpret(hwbrac, ""));
+            OutputBuffer2 scrbyte = new OutputBuffer2();
+            var arewerolling = true;
+            while (arewerolling)
+            {
+                String command = Console.ReadLine();
+                switch (command)
+                {
+                    case "1":
+                        scrbyte.Dump(true);
+                        break;
+                    case "0":
+                        scrbyte.Dump(false);
+                        break;
+                    case "q":
+                        arewerolling = false;
+                        break;
+                    case "r":
+                        Console.WriteLine(scrbyte);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            Console.WriteLine(scrbyte);
         }
     }
 }
