@@ -130,7 +130,6 @@ namespace boolfuc
                         break;
                     case ';':
                         outputBuffer2.Dump(tape.ReadBit(tape.Cursor));
-                        //outBufferSimple.Enqueue(tape.ReadBit(tape.Cursor));
                         break;
                     case ',':
                         tape.WriteCursor(inputBuffer.OneBitFromBuffer());
@@ -154,9 +153,6 @@ namespace boolfuc
                 cursor += 1;
             }
             
-            //byte[] outputByte = new byte[outBufferSimple.Count / 8];
-            //outBufferSimple.CopyTo(outputByte, 0);
-            //Console.Write(Encoding.ASCII.GetString(outputByte));
             return Encoding.ASCII.GetString(outputBuffer2.Export());
         }
     }
