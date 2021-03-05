@@ -132,13 +132,13 @@ namespace boolfuc
         
         List<bool> testBits24 = new List<bool>()
                 { true, false, false, false, false, true, true, false,
-             false, true, false, false, false, true, true, false,
-             true, true, false, false, false, true, true };
+                  false, true, false, false, false, true, true, false,
+                  true, true, false, false, false, true, true };
 
         List<bool> testBits25 = new List<bool>()
                 { true, false, false, false, false, true, true, false,
-             false, true, false, false, false, true, true, false,
-             true, true, false, false, false, true, true, false };
+                  false, true, false, false, false, true, true, false,
+                  true, true, false, false, false, true, true, false };
 
         List<bool> testBits11 = new List<bool>()
                 { false, false, false, false, false, false, false, false, true, true };

@@ -59,6 +59,7 @@ namespace boolfuc
     public class OutputBuffer
     {
         //TODO: send whatever we have (padded with zeros) to stdout when end of program is reached
+        //this is required only for stidn/stdout version of the program, not for kata
         public BitArray outBuffer = new BitArray(8);
         int outputCursor = 0;
         public void Dump(bool value)
@@ -79,29 +80,7 @@ namespace boolfuc
         }
     }
 
-    public class OutputBufferSimple
-    {
-        //TODO: send whatever we have (padded with zeros) to stdout when end of program is reached
-        //It seems that I will no longer need this entire class
-        public BitArray outBuffer = new BitArray(8);
-        int outputCursor = 0;
-        public void Dump(bool value)
-        {
-            if (outputCursor < 8)
-            {
-                outBuffer[outputCursor] = value;
-                outputCursor += 1;
-            }
-            if (outputCursor == 8)
-            {
-                byte[] outputByte = new byte[1];
-                outBuffer.CopyTo(outputByte, 0);
-                Console.Write(Encoding.ASCII.GetString(outputByte));
-                outputCursor = 0;
-                outBuffer[outputCursor] = value;
-            }
-        }
-    }
+    
 
 
 
@@ -139,8 +118,8 @@ namespace boolfuc
             int EOF = code.Length;
             int cursor = 0;
             Tape tape = new Tape();
-            //Queue<bool> outBufferSimple = new Queue<bool>();
-            OutputBuffer outputBuffer = new OutputBuffer();
+            
+            OutputBuffer2 outputBuffer2 = new OutputBuffer2();
             InputBuffer inputBuffer = new InputBuffer();
             while (cursor < EOF)
             {
@@ -150,7 +129,7 @@ namespace boolfuc
                         tape.FlipCursor();
                         break;
                     case ';':
-                        outputBuffer.Dump(tape.ReadBit(tape.Cursor));
+                        outputBuffer2.Dump(tape.ReadBit(tape.Cursor));
                         //outBufferSimple.Enqueue(tape.ReadBit(tape.Cursor));
                         break;
                     case ',':
@@ -178,7 +157,7 @@ namespace boolfuc
             //byte[] outputByte = new byte[outBufferSimple.Count / 8];
             //outBufferSimple.CopyTo(outputByte, 0);
             //Console.Write(Encoding.ASCII.GetString(outputByte));
-            return "ff";
+            return Encoding.ASCII.GetString(outputBuffer2.Export());
         }
     }
     class Program
@@ -205,7 +184,7 @@ namespace boolfuc
              "; ; +; +; ;jj +; ; +; " +           //d
              "+; +; ; ; ; +; +; ; " +           //!
              "; +; +; +; ";
-            //Console.WriteLine(Boolfuck.interpret(hwbrac, ""));
+            Console.WriteLine(Boolfuck.interpret(hwbrac, ""));
             
         }
     }
