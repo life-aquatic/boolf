@@ -14,7 +14,8 @@ namespace boolfuc
         public void Dump(bool value)
         {
             currentChar <<= 1;
-            currentChar += value ? 1 : 0;
+            //the line below looks ugly
+            currentChar += value ? (byte) 1 : (byte) 0;
             bitsWritten += 1;
             if (bitsWritten % 8 == 0)
             {
