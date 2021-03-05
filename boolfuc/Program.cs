@@ -82,6 +82,7 @@ namespace boolfuc
     public class OutputBufferSimple
     {
         //TODO: send whatever we have (padded with zeros) to stdout when end of program is reached
+        //It seems that I will no longer need this entire class
         public BitArray outBuffer = new BitArray(8);
         int outputCursor = 0;
         public void Dump(bool value)
@@ -205,30 +206,7 @@ namespace boolfuc
              "+; +; ; ; ; +; +; ; " +           //!
              "; +; +; +; ";
             //Console.WriteLine(Boolfuck.interpret(hwbrac, ""));
-            OutputBuffer2 scrbyte = new OutputBuffer2();
-            var arewerolling = true;
-            while (arewerolling)
-            {
-                String command = Console.ReadLine();
-                switch (command)
-                {
-                    case "1":
-                        scrbyte.Dump(true);
-                        break;
-                    case "0":
-                        scrbyte.Dump(false);
-                        break;
-                    case "q":
-                        arewerolling = false;
-                        break;
-                    case "r":
-                        Console.WriteLine(scrbyte);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            Console.WriteLine(scrbyte);
+            
         }
     }
 }

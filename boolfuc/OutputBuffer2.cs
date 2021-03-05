@@ -13,15 +13,23 @@ namespace boolfuc
         public List<byte> outBuffer = new List<byte>();
         public void Dump(bool value)
         {
-            if (bitsWritten == 8)
-            {
-                outBuffer.Add(currentChar);
-                bitsWritten = 0;
-                currentChar = 0;
-            }
             currentChar <<= 1;
             currentChar += value ? 1 : 0;
             bitsWritten += 1;
+            if (bitsWritten % 8 == 0)
+            {
+                outBuffer.Add(currentChar);
+                currentChar = 0;
+            }
+        }
+
+        public byte[] Export()
+        {
+            if (outBuffer.Count == 0)
+                Dump(false);
+            for (int i = 0; i < bitsWritten % 8; i++)
+                Dump(false);
+            return outBuffer.ToArray();
         }
 
         //this ToString override is here only for debugging, I'll get rid of it.

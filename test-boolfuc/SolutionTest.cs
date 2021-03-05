@@ -129,23 +129,42 @@ namespace boolfuc
     [TestClass]
     public class TestOutputBuffer2
     {
-        OutputBuffer2 outputBuffer2 = new OutputBuffer2();
+        
         List<bool> testBits24 = new List<bool>()
                 { true, false, false, false, false, true, true, false,
              false, true, false, false, false, true, true, false,
-             true, true, false, false, false, true, true, false, false };
-        List<byte> expectedRes24 = new List<byte>()
+             true, true, false, false, false, true, true };
+
+        List<bool> testBits25 = new List<bool>()
+                { true, false, false, false, false, true, true, false,
+             false, true, false, false, false, true, true, false,
+             true, true, false, false, false, true, true, false };
+
+        List<bool> testBits11 = new List<bool>()
+                { false, false, false, false, false, false, false, false, true, true };
+
+        List<bool> testBits0 = new List<bool>();
+
+        byte[] expectedRes24 = new byte[] { 134, 70, 198 };
+        byte[] expectedRes0 = new byte[] { 0 };
+        byte[] expectedRes11 = new byte[] { 0, 192 };
+
+        public byte[] TestOutputBufferDump2(List<bool> outputB)
         {
-            134, 70, 198
-        };
+            OutputBuffer2 outputBuffer2 = new OutputBuffer2();
+            foreach (bool i in outputB)
+                outputBuffer2.Dump(i);
+            return outputBuffer2.Export();
+        }
+
         [TestMethod]
         public void TestDump()
         {
-            foreach (bool i in testBits24)
-            {
-                outputBuffer2.Dump(i);
-            }
-            CollectionAssert.AreEqual(expectedRes24, outputBuffer2.outBuffer);
+            CollectionAssert.AreEqual(expectedRes24, TestOutputBufferDump2(testBits24));
+            CollectionAssert.AreEqual(expectedRes24, TestOutputBufferDump2(testBits25));
+            CollectionAssert.AreEqual(expectedRes0, TestOutputBufferDump2(testBits0));
+            CollectionAssert.AreEqual(expectedRes11, TestOutputBufferDump2(testBits11));
+
         }
     }
 
