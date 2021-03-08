@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Collections;
-using System.Numerics;
 
 
 namespace boolfuc
@@ -38,24 +34,39 @@ namespace boolfuc
             storageInd.stor[storageInd.ind] = value;
         }
     }
-    public class InputBuffer
-    {
-        //TODO: if end of tape has been reached, do not ask for input, but pad the rest of this with zeros
-        public BitArray readBuffer = new BitArray(0);
-        int inputCursor = -1;
 
-        public bool OneBitFromBuffer()
+    public class OutputBuffer2
+    {
+        byte currentChar = 0b0000_0000;
+        byte position = 0b0000_0001;
+        int bitsWritten = 0;
+        public List<byte> outBuffer = new List<byte>();
+
+        public void Dump(bool value)
         {
-            while (inputCursor >= readBuffer.Length - 1)
+            if (value)
+                currentChar |= position;
+            position <<= 1;
+            bitsWritten += 1;
+            if (bitsWritten % 8 == 0)
             {
-                string input = Console.ReadLine();
-                readBuffer = new BitArray(Encoding.ASCII.GetBytes(input.ToCharArray()));
-                inputCursor = -1;
+                outBuffer.Add(currentChar);
+                currentChar = 0;
+                position = 0b0000_0001;
             }
-            inputCursor += 1;
-            return readBuffer[inputCursor];
+        }
+
+        public byte[] Export()
+        {
+            //if (outBuffer.Count == 0)
+            //    Dump(false);
+            for (int i = 0; i < bitsWritten % 8; i++)
+                Dump(false);
+            return outBuffer.ToArray();
         }
     }
+
+    
     public class InputBuffer2
     {
         public Queue<bool> allInput = new Queue<bool>();
@@ -78,11 +89,6 @@ namespace boolfuc
     }
 
 
-
-
-
-
-
     public static class FlowOfControl
     {
         //now if a bracket is not correctly termintated, we fly out of the program. maybe I need a nice exception for that.
@@ -93,6 +99,7 @@ namespace boolfuc
             bool foundCounterpart = false;
             while (!foundCounterpart | moreBracketsToSkip > 0)
             {
+                
                 if (program[cursor] ==instructions.openingBrac)
                 {
                     foundCounterpart = true;
@@ -179,7 +186,10 @@ namespace boolfuc
              "; ; +; +; ;jj +; ; +; " +           //d
              "+; +; ; ; ; +; +; ; " +           //!
              "; +; +; +; ";
-            Console.WriteLine(Boolfuck.interpret(hwbrac, ""));
+
+            string gibb = ">,>,>,>,>,>,>,>,>>,>,>,>,>,>,>,>,<<<<<<<<+<<<<<<<<+[>+]<[<]>>>>>>>>>[+<<<<<<<<[>]+<[+<]>>>>>>>>>>>>>>>>>>+<<<<<<<<+[>+]<[<]>>>>>>>>>[+<<<<<<<<[>]+<[+<]>>>>>>>>>+<<<<<<<<+[>+]<[<]>>>>>>>>>[+]>[>]+<[+<]>>>>>>>>>[+]>[>]+<[+<]>>>>>>>>>[+]<<<<<<<<<<<<<<<<<<+<<<<<<<<+[>+]<[<]>>>>>>>>>]<[+<]>>>>>>>>>>>>>>>>>>>>>>>>>>>+<<<<<<<<+[>+]<[<]>>>>>>>>>[+<<<<<<<<[>]+<[+<]>>>>>>>>>+<<<<<<<<+[>+]<[<]>>>>>>>>>[+]<<<<<<<<<<<<<<<<<<<<<<<<<<[>]+<[+<]>>>>>>>>>[+]>>>>>>>>>>>>>>>>>>+<<<<<<<<+[>+]<[<]>>>>>>>>>]<[+<]<<<<<<<<<<<<<<<<<<+<<<<<<<<+[>+]<[<]>>>>>>>>>[+]+<<<<<<<<+[>+]<[<]>>>>>>>>>]<[+<]>>>>>>>>>>>>>>>>>>>;>;>;>;>;>;>;>;<<<<<<<<";
+
+            //Console.WriteLine(Boolfuck.interpret(gibb, "\u0008\u0009"));
             
         }
     }

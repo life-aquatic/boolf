@@ -53,31 +53,31 @@ namespace boolfuc
             tape.FlipCursor();
             Assert.AreEqual(tape.ReadBit(tape.Cursor), false);
         }
-        [TestMethod]
-        public void TestInputBuffer()
-        {
-            InputBuffer inputBuffer = new InputBuffer();
-            inputBuffer.readBuffer = new BitArray(new byte[] { 97, 98, 99 });
-            List<bool> testBits = new List<bool>() { true, false, false, false, false, true, true, false,
-             false, true, false, false, false, true, true, false,
-             true, true, false, false, false, true, true, false };
-            //abc
-            //97,98,99
-            //("True ", "False", "False ", "False ", "False ", "True ", "True ", "False", 
-            // "False", "True ", "False ", "False ", "False ", "True ", "True ", "False", 
-            // "True ", "True ", "False ", "False ", "False ", "True ", "True ", "False")
-            foreach (bool i in testBits)
-            {
-                Assert.AreEqual(i, inputBuffer.OneBitFromBuffer());
-            }
-            var emulatedInput = new System.IO.StringReader("abc");
-            Console.SetIn(emulatedInput);
-            foreach (bool i in testBits)
-            {
-                Assert.AreEqual(i, inputBuffer.OneBitFromBuffer());
-            }
+        
+        //public void TestInputBuffer()
+        //{
+        //    InputBuffer inputBuffer = new InputBuffer();
+        //    inputBuffer.readBuffer = new BitArray(new byte[] { 97, 98, 99 });
+        //    List<bool> testBits = new List<bool>() { true, false, false, false, false, true, true, false,
+        //     false, true, false, false, false, true, true, false,
+        //     true, true, false, false, false, true, true, false };
+        //    //abc
+        //    //97,98,99
+        //    //("True ", "False", "False ", "False ", "False ", "True ", "True ", "False", 
+        //    // "False", "True ", "False ", "False ", "False ", "True ", "True ", "False", 
+        //    // "True ", "True ", "False ", "False ", "False ", "True ", "True ", "False")
+        //    foreach (bool i in testBits)
+        //    {
+        //        Assert.AreEqual(i, inputBuffer.OneBitFromBuffer());
+        //    }
+        //    var emulatedInput = new System.IO.StringReader("abc");
+        //    Console.SetIn(emulatedInput);
+        //    foreach (bool i in testBits)
+        //    {
+        //        Assert.AreEqual(i, inputBuffer.OneBitFromBuffer());
+        //    }
 
-        }
+        //}
 
         [TestMethod]
         public void TestInputBuffer2()
@@ -129,7 +129,7 @@ namespace boolfuc
         List<bool> testBits0 = new List<bool>();
 
         byte[] expectedRes24 = new byte[] { 97, 98, 99 };
-        byte[] expectedRes0 = new byte[] { 0 };
+        byte[] expectedRes0 = new byte[0];
         byte[] expectedRes11 = new byte[] { 0, 3 };
 
         public byte[] TestOutputBufferDump2(List<bool> outputB)
