@@ -9,18 +9,33 @@ namespace boolfuc
     public class OutputBuffer2
     {
         byte currentChar = 0b0000_0000;
+        byte zaka = 0b0000_0001;
         int bitsWritten = 0;
         public List<byte> outBuffer = new List<byte>();
-        public void Dump(bool value)
+        //public void Dump(bool value)
+        //{
+        //    currentChar <<= 1;
+        //    //the line below looks ugly
+        //    currentChar += value ? (byte) 1 : (byte) 0;
+        //    bitsWritten += 1;
+        //    if (bitsWritten % 8 == 0)
+        //    {
+        //        outBuffer.Add(currentChar);
+        //        currentChar = 0;
+        //    }
+        //}
+
+        public void Dump (bool value)
         {
-            currentChar <<= 1;
-            //the line below looks ugly
-            currentChar += value ? (byte) 1 : (byte) 0;
+            if (value)
+                currentChar |= zaka;
+            zaka <<= 1;
             bitsWritten += 1;
             if (bitsWritten % 8 == 0)
             {
                 outBuffer.Add(currentChar);
                 currentChar = 0;
+                zaka = 0b0000_0001;
             }
         }
 
@@ -30,6 +45,7 @@ namespace boolfuc
                 Dump(false);
             for (int i = 0; i < bitsWritten % 8; i++)
                 Dump(false);
+            System.IO.File.WriteAllBytes("du.dat", outBuffer.ToArray());
             return outBuffer.ToArray();
         }
 
