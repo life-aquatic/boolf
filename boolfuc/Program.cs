@@ -40,7 +40,7 @@ namespace boolfuc
     }
     public class InputBuffer
     {
-        //TODO: if end of program has been reached, do not ask for input, but pad the rest of this with zeros
+        //TODO: if end of tape has been reached, do not ask for input, but pad the rest of this with zeros
         public BitArray readBuffer = new BitArray(0);
         int inputCursor = -1;
 
@@ -56,31 +56,29 @@ namespace boolfuc
             return readBuffer[inputCursor];
         }
     }
-    public class OutputBuffer
+    public class InputBuffer2
     {
-        //TODO: send whatever we have (padded with zeros) to stdout when end of program is reached
-        //this is required only for stidn/stdout version of the program, not for kata
-        public BitArray outBuffer = new BitArray(8);
-        int outputCursor = 0;
-        public void Dump(bool value)
+        public Queue<bool> allInput = new Queue<bool>();
+        public InputBuffer2(string input)
         {
-            if (outputCursor < 8)
+            foreach (bool i in new BitArray(Encoding.ASCII.GetBytes(input.ToCharArray())))
+                allInput.Enqueue(i);
+        }
+
+        public bool OneBitFromBuffer()
+        {
+            try
             {
-                outBuffer[outputCursor] = value;
-                outputCursor += 1;
-            }
-            if (outputCursor == 8)
+                return allInput.Dequeue();
+            } catch
             {
-                byte[] outputByte = new byte[1];
-                outBuffer.CopyTo(outputByte, 0);
-                Console.Write(Encoding.ASCII.GetString(outputByte));
-                outputCursor = 0;
-                outBuffer[outputCursor] = value;
+                return false;
             }
         }
     }
 
-    
+
+
 
 
 
@@ -120,7 +118,8 @@ namespace boolfuc
             Tape tape = new Tape();
             
             OutputBuffer2 outputBuffer2 = new OutputBuffer2();
-            InputBuffer inputBuffer = new InputBuffer();
+            InputBuffer2 inputBuffer2 = new InputBuffer2(input);
+            
             while (cursor < EOF)
             {
                 switch (code[cursor])
@@ -132,7 +131,7 @@ namespace boolfuc
                         outputBuffer2.Dump(tape.ReadBit(tape.Cursor));
                         break;
                     case ',':
-                        tape.WriteCursor(inputBuffer.OneBitFromBuffer());
+                        tape.WriteCursor(inputBuffer2.OneBitFromBuffer());
                         break;
                     case '>':
                         tape.Cursor += 1;

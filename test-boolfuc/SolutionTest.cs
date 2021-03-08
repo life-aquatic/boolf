@@ -79,53 +79,35 @@ namespace boolfuc
 
         }
 
-
-
-    }
-    [TestClass]
-    public class OutputTests
-    {
-        public System.IO.StringWriter w;
-        private string _consoleOutput;
-        OutputBuffer outputBuffer;
-
-        List<bool> testBits24 = new List<bool>()
-                { true, false, false, false, false, true, true, false,
+        [TestMethod]
+        public void TestInputBuffer2()
+        {
+            InputBuffer2 inputBuffer2 = new InputBuffer2("abc");
+            List<bool> testBitsNoPadding = new List<bool>() { true, false, false, false, false, true, true, false,
              false, true, false, false, false, true, true, false,
              true, true, false, false, false, true, true, false };
-
-        List<bool> testBits23 = new List<bool>()
-                { true, false, false, false, false, true, true, false,
-             false, true, false, false, false, true, true, false,
-             true, true, false, false, false, true, false };
-
-        List<bool> testBits0 = new List<bool>()
-        { };
-
-        public string TestOutputBuffer(List<bool> outputB)
-        {
-            outputBuffer = new OutputBuffer();
-            w = new System.IO.StringWriter();
-            Console.SetOut(w);
-            foreach (var i in outputB)
+            for (int i = 0; i < 24; i++)
             {
-                outputBuffer.Dump(i);
+                Assert.AreEqual(testBitsNoPadding[i], inputBuffer2.OneBitFromBuffer());
             }
-            _consoleOutput = w.GetStringBuilder().ToString().Trim();
-            return _consoleOutput;
-        }
-        [TestMethod]
-        public void TestOutputs()
-        {
-            Assert.AreEqual(TestOutputBuffer(testBits24), "abc");
-            Assert.AreEqual(TestOutputBuffer(testBits23), "ab");
-            Assert.AreEqual(TestOutputBuffer(testBits0), "");
+
+
+            //in the second test I have only 24 bits in my input string, but I am querying it 27 times. last 3 results should be "false"
+            inputBuffer2 = new InputBuffer2("abc");
+            List<bool> testBitsWithPadding = new List<bool>() { true, false, false, false, false, true, true, false,
+             false, true, false, false, false, true, true, false,
+             true, true, false, false, false, true, true, false, false, false, false };
+            for (int i = 0; i < 27; i++)
+            {
+                Assert.AreEqual(testBitsWithPadding[i], inputBuffer2.OneBitFromBuffer());
+            }
         }
 
-        
 
 
     }
+    
+    
     [TestClass]
     public class TestOutputBuffer2
     {
@@ -141,13 +123,14 @@ namespace boolfuc
                   true, true, false, false, false, true, true, false };
 
         List<bool> testBits11 = new List<bool>()
-                { false, false, false, false, false, false, false, false, true, true };
+                { false, false, false, false, false, false, false, false, 
+                  true, true };
 
         List<bool> testBits0 = new List<bool>();
 
-        byte[] expectedRes24 = new byte[] { 134, 70, 198 };
+        byte[] expectedRes24 = new byte[] { 97, 98, 99 };
         byte[] expectedRes0 = new byte[] { 0 };
-        byte[] expectedRes11 = new byte[] { 0, 192 };
+        byte[] expectedRes11 = new byte[] { 0, 3 };
 
         public byte[] TestOutputBufferDump2(List<bool> outputB)
         {
