@@ -53,31 +53,32 @@ namespace boolfuc
             tape.FlipCursor();
             Assert.AreEqual(tape.ReadBit(tape.Cursor), false);
         }
-        
-        //public void TestInputBuffer()
-        //{
-        //    InputBuffer inputBuffer = new InputBuffer();
-        //    inputBuffer.readBuffer = new BitArray(new byte[] { 97, 98, 99 });
-        //    List<bool> testBits = new List<bool>() { true, false, false, false, false, true, true, false,
-        //     false, true, false, false, false, true, true, false,
-        //     true, true, false, false, false, true, true, false };
-        //    //abc
-        //    //97,98,99
-        //    //("True ", "False", "False ", "False ", "False ", "True ", "True ", "False", 
-        //    // "False", "True ", "False ", "False ", "False ", "True ", "True ", "False", 
-        //    // "True ", "True ", "False ", "False ", "False ", "True ", "True ", "False")
-        //    foreach (bool i in testBits)
-        //    {
-        //        Assert.AreEqual(i, inputBuffer.OneBitFromBuffer());
-        //    }
-        //    var emulatedInput = new System.IO.StringReader("abc");
-        //    Console.SetIn(emulatedInput);
-        //    foreach (bool i in testBits)
-        //    {
-        //        Assert.AreEqual(i, inputBuffer.OneBitFromBuffer());
-        //    }
 
-        //}
+        [TestMethod]
+        public void TestInputBuffer()
+        {
+            InputBuffer inputBuffer = new InputBuffer();
+            inputBuffer.readBuffer = new BitArray(new byte[] { 97, 98, 99 });
+            List<bool> testBits = new List<bool>() { true, false, false, false, false, true, true, false,
+             false, true, false, false, false, true, true, false,
+             true, true, false, false, false, true, true, false };
+            //abc
+            //97,98,99
+            //("True ", "False", "False ", "False ", "False ", "True ", "True ", "False", 
+            // "False", "True ", "False ", "False ", "False ", "True ", "True ", "False", 
+            // "True ", "True ", "False ", "False ", "False ", "True ", "True ", "False")
+            foreach (bool i in testBits)
+            {
+                Assert.AreEqual(i, inputBuffer.OneBitFromBuffer());
+            }
+            var emulatedInput = new System.IO.StringReader("abc");
+            Console.SetIn(emulatedInput);
+            foreach (bool i in testBits)
+            {
+                Assert.AreEqual(i, inputBuffer.OneBitFromBuffer());
+            }
+
+        }
 
         [TestMethod]
         public void TestInputBuffer2()
@@ -106,8 +107,50 @@ namespace boolfuc
 
 
     }
-    
-    
+
+    [TestClass]
+    public class OutputTests
+    {
+        public System.IO.StringWriter w;
+        private string _consoleOutput;
+        OutputBuffer outputBuffer;
+
+        List<bool> testBits24 = new List<bool>()
+                { true, false, false, false, false, true, true, false,
+             false, true, false, false, false, true, true, false,
+             true, true, false, false, false, true, true, false };
+
+        List<bool> testBits23 = new List<bool>()
+                { true, false, false, false, false, true, true, false,
+             false, true, false, false, false, true, true, false,
+             true, true, false, false, false, true, false };
+
+        List<bool> testBits0 = new List<bool>()
+        { };
+
+        public string TestOutputBuffer(List<bool> outputB)
+        {
+            outputBuffer = new OutputBuffer();
+            w = new System.IO.StringWriter();
+            Console.SetOut(w);
+            foreach (var i in outputB)
+            {
+                outputBuffer.Dump(i);
+            }
+            _consoleOutput = w.GetStringBuilder().ToString().Trim();
+            return _consoleOutput;
+        }
+        [TestMethod]
+        public void TestOutputs()
+        {
+            Assert.AreEqual(TestOutputBuffer(testBits24), "abc");
+            Assert.AreEqual(TestOutputBuffer(testBits23), "ab");
+            Assert.AreEqual(TestOutputBuffer(testBits0), "");
+        }
+
+
+    }
+
     [TestClass]
     public class TestOutputBuffer2
     {
