@@ -35,58 +35,7 @@ namespace boolfuc
         }
     }
 
-    public class OutputBuffer2
-    {
-        byte currentChar = 0b0000_0000;
-        byte position = 0b0000_0001;
-        int bitsWritten = 0;
-        public List<byte> outBuffer = new List<byte>();
-
-        public void Dump(bool value)
-        {
-            if (value)
-                currentChar |= position;
-            position <<= 1;
-            bitsWritten += 1;
-            if (bitsWritten % 8 == 0)
-            {
-                outBuffer.Add(currentChar);
-                currentChar = 0;
-                position = 0b0000_0001;
-            }
-        }
-
-        public byte[] Export()
-        {
-            //if (outBuffer.Count == 0)
-            //    Dump(false);
-            for (int i = 0; i < bitsWritten % 8; i++)
-                Dump(false);
-            return outBuffer.ToArray();
-        }
-    }
-
     
-    public class InputBuffer2
-    {
-        public Queue<bool> allInput = new Queue<bool>();
-        public InputBuffer2(string input)
-        {
-            foreach (bool i in new BitArray(Encoding.ASCII.GetBytes(input.ToCharArray())))
-                allInput.Enqueue(i);
-        }
-
-        public bool OneBitFromBuffer()
-        {
-            try
-            {
-                return allInput.Dequeue();
-            } catch
-            {
-                return false;
-            }
-        }
-    }
 
 
     public static class FlowOfControl
