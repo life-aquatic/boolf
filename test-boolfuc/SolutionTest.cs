@@ -57,7 +57,7 @@ namespace boolfuc
         [TestMethod]
         public void TestInputBuffer()
         {
-            InputBuffer inputBuffer = new InputBuffer();
+            StdInputBuffer inputBuffer = new StdInputBuffer();
             inputBuffer.readBuffer = new BitArray(new byte[] { 97, 98, 99 });
             List<bool> testBits = new List<bool>() { true, false, false, false, false, true, true, false,
              false, true, false, false, false, true, true, false,
@@ -83,7 +83,7 @@ namespace boolfuc
         [TestMethod]
         public void TestInputBuffer2()
         {
-            InputBuffer2 inputBuffer2 = new InputBuffer2("abc");
+            StringInputBuffer inputBuffer2 = new StringInputBuffer("abc");
             List<bool> testBitsNoPadding = new List<bool>() { true, false, false, false, false, true, true, false,
              false, true, false, false, false, true, true, false,
              true, true, false, false, false, true, true, false };
@@ -94,7 +94,7 @@ namespace boolfuc
 
 
             //in the second test I have only 24 bits in my input string, but I am querying it 27 times. last 3 results should be "false"
-            inputBuffer2 = new InputBuffer2("abc");
+            inputBuffer2 = new StringInputBuffer("abc");
             List<bool> testBitsWithPadding = new List<bool>() { true, false, false, false, false, true, true, false,
              false, true, false, false, false, true, true, false,
              true, true, false, false, false, true, true, false, false, false, false };
@@ -135,7 +135,7 @@ namespace boolfuc
             Console.SetOut(w);
             foreach (var i in outputB)
             {
-                outputBuffer.Dump(i);
+                outputBuffer.Dump(i, true);
             }
             _consoleOutput = w.GetStringBuilder().ToString().Trim();
             return _consoleOutput;
@@ -177,7 +177,7 @@ namespace boolfuc
 
         public byte[] TestOutputBufferDump2(List<bool> outputB)
         {
-            OutputBuffer2 outputBuffer2 = new OutputBuffer2();
+            OutputBuffer outputBuffer2 = new OutputBuffer();
             foreach (bool i in outputB)
                 outputBuffer2.Dump(i);
             return outputBuffer2.Export();

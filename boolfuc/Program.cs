@@ -9,9 +9,8 @@ namespace boolfuc
     public class Tape
     {
         public int Cursor = 0;
-        //TODO - remove 999 bit limit
-        public BitArray Positive = new BitArray(999);
-        public BitArray Negative = new BitArray(999);
+        public BitArray Positive = new BitArray(128);
+        public BitArray Negative = new BitArray(128);
         public (BitArray stor, int ind) UnsigifyStorage(int cursor)
         {
             return cursor < 0 ? (Negative, cursor * -1 - 1) : (Positive, cursor);
@@ -22,7 +21,6 @@ namespace boolfuc
             return storageInd.stor[storageInd.ind];
         }
 
-
         public void FlipCursor()
         {
             var storageInd = UnsigifyStorage(Cursor);
@@ -31,7 +29,16 @@ namespace boolfuc
         public void WriteCursor(bool value)
         {
             var storageInd = UnsigifyStorage(Cursor);
-            storageInd.stor[storageInd.ind] = value;
+
+            if (storageInd.stor.Length <= storageInd.ind)
+            {
+                storageInd.stor.Length = storageInd.ind + 1;
+                storageInd.stor[storageInd.ind] = value;
+            }
+            else
+            {
+                storageInd.stor[storageInd.ind] = value;
+            }
         }
     }
 
@@ -66,15 +73,20 @@ namespace boolfuc
     }
     public class Boolfuck
     {
-        public static string interpret(string code, string input)
+        
+        public static string interpret(string code, string input, bool stdIO = false)
         {
             int EOF = code.Length;
             int cursor = 0;
             Tape tape = new Tape();
-            
-            OutputBuffer2 outputBuffer2 = new OutputBuffer2();
-            InputBuffer2 inputBuffer2 = new InputBuffer2(input);
-            
+            OutputBuffer outputBuffer = new OutputBuffer();
+            IInputBuffer inputBuffer;
+            if (stdIO)
+                inputBuffer = new StdInputBuffer();
+            else
+                inputBuffer = new StringInputBuffer(input);
+
+
             while (cursor < EOF)
             {
                 switch (code[cursor])
@@ -83,10 +95,10 @@ namespace boolfuc
                         tape.FlipCursor();
                         break;
                     case ';':
-                        outputBuffer2.Dump(tape.ReadBit(tape.Cursor));
+                        outputBuffer.Dump(tape.ReadBit(tape.Cursor), stdIO);
                         break;
                     case ',':
-                        tape.WriteCursor(inputBuffer2.OneBitFromBuffer());
+                        tape.WriteCursor(inputBuffer.OneBitFromBuffer());
                         break;
                     case '>':
                         tape.Cursor += 1;
@@ -95,7 +107,7 @@ namespace boolfuc
                         tape.Cursor -= 1;
                         break;
                     case '[':
-                        if (!tape.ReadBit(tape.Cursor))
+                        if (tape.ReadBit(tape.Cursor) == false)
                             cursor = FlowOfControl.JumpCursor(code, cursor);
                         break;
                     case ']':
@@ -106,8 +118,7 @@ namespace boolfuc
                 }
                 cursor += 1;
             }
-            
-            return Encoding.ASCII.GetString(outputBuffer2.Export());
+            return Encoding.ASCII.GetString(outputBuffer.Export());
         }
     }
     class Program
@@ -124,7 +135,7 @@ namespace boolfuc
                 Console.WriteLine("Unable to get program from first argument, exiting");
                 Environment.Exit(13);
             }
-            Console.Write(Boolfuck.interpret(program.ToString(), ""));
+            Console.Write(Boolfuck.interpret(program.ToString(), "", true));
         }
     }
 }
