@@ -9,8 +9,8 @@ namespace boolfuc
     public class Tape
     {
         public int Cursor = 0;
-        public BitArray Positive = new BitArray(128);
-        public BitArray Negative = new BitArray(128);
+        public BitArray Positive = new BitArray(9999);
+        public BitArray Negative = new BitArray(9999);
         public (BitArray stor, int ind) UnsigifyStorage(int cursor)
         {
             return cursor < 0 ? (Negative, cursor * -1 - 1) : (Positive, cursor);
@@ -39,6 +39,10 @@ namespace boolfuc
             {
                 storageInd.stor[storageInd.ind] = value;
             }
+        }
+        public override string ToString()
+        {
+            return base.ToString();
         }
     }
 
@@ -76,6 +80,8 @@ namespace boolfuc
         
         public static string interpret(string code, string input, bool stdIO = false)
         {
+            //remove logger
+            Logger logger = new Logger();
             int EOF = code.Length;
             int cursor = 0;
             Tape tape = new Tape();
@@ -111,11 +117,14 @@ namespace boolfuc
                             cursor = FlowOfControl.JumpCursor(code, cursor);
                         break;
                     case ']':
-                        cursor = FlowOfControl.JumpCursor(code, cursor, true) + 1;
+                        if (tape.ReadBit(tape.Cursor) == true)
+                            cursor = FlowOfControl.JumpCursor(code, cursor, true) + 1;
                         break;
                     default:
                         break;
                 }
+                //remove this consolewriteline
+                //Console.WriteLine(tape.ReadBit(tape.Cursor));
                 cursor += 1;
             }
             return Encoding.ASCII.GetString(outputBuffer.Export());
